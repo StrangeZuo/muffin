@@ -1,0 +1,4 @@
+version=4
+opts="filenamemangle=s/.*\/(.*)/muffin-$1/" \
+    https://github.com/linuxmint/muffin/tags .*/(\d.*)\.(?:tgz|tar\.(?:gz|bz2|xz))
+# Bart Martens <bartm@debian.org>  Sat, 17 Nov 2012 13:04:46 +0000

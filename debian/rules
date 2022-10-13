@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+DEB_BUILD_ARCH     ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+export DEB_BUILD_MAINT_OPTIONS = hardening=+bindnow
+
+ifeq (ppc64el,$(filter $(DEB_BUILD_ARCH),ppc64el))
+  CFLAGS += -O2
+endif
+
+%:
+	dh $@ --with gir
+
+override_dh_autoreconf:
+	NOCONFIGURE=1 dh_autoreconf ./autogen.sh
+
+override_dh_auto_configure:
+	dh_auto_configure -- --disable-static \
+	                     --disable-silent-rules\
+	                     --libexecdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH)
+
+override_dh_install:
+	dh_install -p gir1.2-meta-muffin-0.0 debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/muffin/*.typelib /usr/lib/$(DEB_HOST_MULTIARCH)/girepository-1.0
+	dh_install --remaining-packages
+
+override_dh_auto_test:
+	: temporary
+
+run_dh_acc:
+	# The package needs to be installed (@ in autopkgtest)
+	for in_file in debian/*.acc.in; do \
+	    out_file=$${in_file%.in}; \
+	    sed 's/\$${DEB_HOST_MULTIARCH}/'"$(DEB_HOST_MULTIARCH)"'/' \
+		"$${in_file}" > "$${out_file}"; \
+	done
+
+	dh_acc

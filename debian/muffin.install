@@ -1,0 +1,4 @@
+usr/bin/muffin*
+usr/lib/*/muffin/plugins
+usr/lib/*/muffin-restart-helper
+usr/share/applications/muffin*

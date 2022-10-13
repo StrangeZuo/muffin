@@ -1,0 +1,2 @@
+# Upstream doesn't care as it's only used internally
+libmuffin-dev: pkg-config-bad-directive usr/lib/*/pkgconfig/muffin-plugins.pc *
