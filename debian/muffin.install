@@ -1,4 +1,4 @@
-usr/bin/muffin*
+usr/bin
 usr/lib/*/muffin/plugins
-usr/lib/*/muffin-restart-helper
-usr/share/applications/muffin*
+usr/libexec/muffin-restart-helper
+usr/share/applications
